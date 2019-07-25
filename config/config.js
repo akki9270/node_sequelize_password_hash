@@ -8,6 +8,3 @@ exports.SQL = {
     "port": "3306",
     "dialect": "mysql"
   };
-
-exports.SECRET = '9211dc48153ba70a02d0df64b2550134';
-exports.TOKENHEADER = 'x-access-token';

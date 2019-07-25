@@ -1,15 +1,11 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const passport = require('passport');
 
-const config = require('./config/config');
 const models = require('./models');
 
-require('./passport'); // Include Own passport strategy..
 // parse request as Json object
 app.use(bodyParser.json());
-app.use(passport.initialize());
 
 models.sequelize.sync({ force: true })
     .then(async () => {
@@ -35,19 +31,14 @@ app.post('/login', async function(req, res) {
     }
     let hash = models.User.sha512(password, user.password_salt);
     if (hash.passwordHash === user.password_hash) {
-        // from now on we'll identify the user by the id and the id is
-        // the only personalized value that goes into our token
-        let payload = { id: user.id };
-
         res.status(200).json({ msg: 'ok'});
     } else {
         console.log('else');
-       return cb({ msg: 'Password is incorrect' });
-        // return res.status(401).json({ msg: 'Password is incorrect' });
+        return res.status(401).json({ msg: 'Password is incorrect' });
     }
 })    
 // get list of hospitals using models.
-app.get('/hospitals',passport.authenticate('jwt', {session: false }), async function (req, res) {
+app.get('/hospitals', async function (req, res) {
     let hospitals = await models.Hospital.findAll({});
 
     // to get selected fields only. uncomment it and check.
