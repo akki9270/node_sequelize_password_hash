@@ -1,4 +1,4 @@
-# node_sequelize
+# node_sequelize_password_hash
 Integrating NodeJs with Sequelize
 
 clone the project and run the command at root.
